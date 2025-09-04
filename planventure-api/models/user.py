@@ -1,5 +1,9 @@
 from datetime import datetime
 from . import db
+from flask_bcrypt import Bcrypt
+from utils.auth import generate_token, get_jwt_identity
+
+bcrypt = Bcrypt()
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -12,3 +16,26 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<User {self.email}>'
+
+    def set_password(self, password):
+        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password_hash, password)
+
+    @classmethod
+    def create(cls, email, password):
+        user = cls(email=email)
+        user.set_password(password)
+        return user
+
+    def generate_auth_token(self):
+        return generate_token(self.id)
+
+    @staticmethod
+    def verify_auth_token(token):
+        try:
+            user_id = get_jwt_identity()
+            return User.query.get(user_id)
+        except:
+            return None
