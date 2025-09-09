@@ -1,0 +1,101 @@
+meta {
+  name: trips
+  type: http
+  seq: 1
+}
+
+# Create Trip
+post http://localhost:5000/trips {
+  headers {
+    Content-Type: application/json
+    Authorization: Bearer {{auth_token}}
+  }
+  body {
+    "destination": "Paris, France",
+    "start_date": "2024-06-15",
+    "end_date": "2024-06-22",
+    "coordinates": {
+      "lat": 48.8566,
+      "lng": 2.3522
+    },
+    "itinerary": {
+      "day1": {
+        "activities": [
+          {
+            "time": "09:00",
+            "activity": "Visit Eiffel Tower",
+            "location": "Champ de Mars"
+          },
+          {
+            "time": "13:00",
+            "activity": "Lunch at Le Marais",
+            "location": "Le Marais District"
+          }
+        ]
+      },
+      "day2": {
+        "activities": [
+          {
+            "time": "10:00",
+            "activity": "Louvre Museum Tour",
+            "location": "Rue de Rivoli"
+          }
+        ]
+      }
+    }
+  }
+}
+
+# Get All Trips
+get http://localhost:5000/trips {
+  headers {
+    Authorization: Bearer {{auth_token}}
+  }
+}
+
+# Get Single Trip
+get http://localhost:5000/trips/1 {
+  headers {
+    Authorization: Bearer {{auth_token}}
+  }
+}
+
+# Update Trip
+put http://localhost:5000/trips/1 {
+  headers {
+    Content-Type: application/json
+    Authorization: Bearer {{auth_token}}
+  }
+  body {
+    "destination": "Paris, France",
+    "start_date": "2024-06-16",
+    "end_date": "2024-06-23",
+    "coordinates": {
+      "lat": 48.8566,
+      "lng": 2.3522
+    },
+    "itinerary": {
+      "day1": {
+        "activities": [
+          {
+            "time": "10:00",
+            "activity": "Visit Arc de Triomphe",
+            "location": "Place Charles de Gaulle"
+          }
+        ]
+      }
+    }
+  }
+}
+
+# Delete Trip
+delete http://localhost:5000/trips/1 {
+  headers {
+    Authorization: Bearer {{auth_token}}
+  }
+}
+
+# Variables
+vars {
+  auth_token: your_jwt_token_here
+}

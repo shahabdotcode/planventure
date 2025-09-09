@@ -4,7 +4,7 @@ from models import db
 from models.user import User
 import re
 
-auth_bp = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__, url_prefix='/api')
 
 def is_valid_email(email):
     pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
@@ -54,7 +54,7 @@ def login():
             return jsonify({'error': 'Invalid email or password'}), 401
             
         # Generate access token
-        access_token = create_access_token(identity=user.id)
+        access_token = create_access_token(identity=str(user.id))
         
         return jsonify({
             'message': 'Login successful',
@@ -94,3 +94,5 @@ def get_user_profile(current_user):
         'id': current_user.id,
         'email': current_user.email
     }), 200
+
+# JWT handlers moved to app.py

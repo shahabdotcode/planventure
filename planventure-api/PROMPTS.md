@@ -229,6 +229,107 @@ Use Source Control with Copilot to create your final commit.
 
 Ask Copilot to write a comprehensive README for your API project.
 
+## API Endpoints Reference
+
+### Trip Endpoints
+
+| Method | URL                              | Description         | Request Body | Auth Required |
+|--------|----------------------------------|-------------------|--------------|---------------|
+| POST   | http://localhost:5000/api/trips  | Create new trip   | Yes         | Yes           |
+| GET    | http://localhost:5000/api/trips  | Get all trips     | No          | Yes           |
+| GET    | http://localhost:5000/api/trips/1| Get trip by ID    | No          | Yes           |
+| PUT    | http://localhost:5000/api/trips/1| Update trip       | Yes         | Yes           |
+| DELETE | http://localhost:5000/api/trips/1| Delete trip       | No          | Yes           |
+
+Example trip creation body:
+```json
+{
+  "destination": "Paris, France",
+  "start_date": "2024-06-15",
+  "end_date": "2024-06-22",
+  "coordinates": {
+    "lat": 48.8566,
+    "lng": 2.3522
+  },
+  "itinerary": {
+    "day1": {
+      "activities": [
+        {
+          "time": "09:00",
+          "activity": "Visit Eiffel Tower",
+          "location": "Champ de Mars"
+        }
+      ]
+    }
+  }
+}
+```
+
+**Note**: All trip endpoints require a valid JWT token in the Authorization header:
+```
+Authorization: Bearer <your_jwt_token>
+```
+
+### Curl Examples
+
+1. Create a new trip:
+```bash
+curl -X POST http://localhost:5000/api/trips \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{
+    "destination": "Paris, France",
+    "start_date": "2024-06-15",
+    "end_date": "2024-06-22",
+    "coordinates": {
+      "lat": 48.8566,
+      "lng": 2.3522
+    },
+    "itinerary": {
+      "day1": {
+        "activities": [
+          {
+            "time": "09:00",
+            "activity": "Visit Eiffel Tower",
+            "location": "Champ de Mars"
+          }
+        ]
+      }
+    }
+  }'
+```
+
+1. Get all trips:
+```bash
+curl -X GET http://localhost:5000/api/trips \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+2. Get single trip:
+```bash
+curl -X GET http://localhost:5000/api/trips/1 \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+4. Update trip:
+```bash
+curl -X PUT http://localhost:5000/api/trips/1 \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{
+    "destination": "Updated Paris Trip",
+    "start_date": "2024-06-16"
+  }'
+```
+
+5. Delete trip:
+```bash
+curl -X DELETE http://localhost:5000/api/trips/1 \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+**Note**: Replace `YOUR_JWT_TOKEN` with the actual token received from the login endpoint.
+
 ## Common Issues and Solutions
 
 ### GOTCHAS:
